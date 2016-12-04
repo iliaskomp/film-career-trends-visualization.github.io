@@ -102,7 +102,8 @@ Person.prototype.addAllFilms = function addAllFilms() {
         return parseInt(a.getYear()) - parseInt(b.getYear());
     });
     clearResultsDiv();
-    self.showFilmData();
+  //  self.showFilmData();
+    self.showFilmGraph();
 }
 
 // Show all film data for the person selected
@@ -121,6 +122,7 @@ Person.prototype.showFilmData = function showFilmData() {
 function clearResultsDiv() {
 	d3.selectAll('#person-results').html('');
 	d3.selectAll('#person-film-results').html('');
+    d3.selectAll("#visualization").html('');
 }
 
 function Film (title, id, overview, poster_path, backdrop_path, genre_ids, release_date, vote_average, vote_count) {
