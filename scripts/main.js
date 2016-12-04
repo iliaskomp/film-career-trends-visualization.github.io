@@ -19,7 +19,6 @@ function showPersonResults(json) {
     var personResults = d3.selectAll('#person-results');
     // personResults.empty();
     clearResultsDiv();
-    console.log(data);
 
     for(var i=0; i<data.length; i++) {
     	var id = i;
@@ -28,68 +27,95 @@ function showPersonResults(json) {
         	.attr('id', id)
         	.text(data[i].name)
         	.on('click', function() {
-        		getFilmDataForPerson(data[this.id].id);
+        		new Person(data[this.id].id).getFilmData();
          	});
     }
 }
 
-// Get all films for the person selected
-function getFilmDataForPerson(id) {
-     //https://api.themoviedb.org/3/discover/movie?api_key=1d9b5b41baa47611c75d9537cd59c830&sort_by=release_date.asc&page=1&with_people=1461
-    var requestUrl = baseUrl + "discover/movie" + "?api_key=" + apiKey + "&sort_by=release_date.asc" + "&with_people=" + id;
-    d3.json(requestUrl, function(json){showFilmResults(json,id);});
+function Person (id) {
+	this.id = id;
+	this.films = [];
+	this.pages = [];
+	this.totalPages;
 }
 
-function showFilmResults(json, id) {
-    var totalPages = json.total_pages;
-    var personFilmData = [];
-    
-    for(var i=0; i<json.results.length; i++) {
-    	var obj = json.results[i];
-        var film = new Film(obj.title, obj.id, obj.overview, obj.poster_path, obj.backdrop_path, obj.genre_ids, obj.release_date, obj.vote_average, obj.vote_count);
-        personFilmData.push(film);
-    };
-    
-    // Not working showing!
+Person.prototype.getFilmData = function getFilmData () {
+	var self = this;
+	
+    //https://api.themoviedb.org/3/discover/movie?api_key=1d9b5b41baa47611c75d9537cd59c830&sort_by=release_date.asc&page=1&with_people=1461
+    var requestUrl = baseUrl + "discover/movie" + "?api_key=" + apiKey + "&sort_by=release_date.asc" + "&with_people=" + self.id;
+    d3.json(requestUrl, function(json) {
+    	self.processFilmData(json);
+    });
+}
+
+Person.prototype.processFilmData = function processFilmData (json) {
+	var self = this;
+	self.saveFilmResults(json);
+	self.totalPages = json.total_pages;
+
+	var totalPages = json.total_pages;
     if (totalPages > 1) {
-        for (var i = 2; i < totalPages; i++) {
-            var requestUrl = baseUrl + "discover/movie" + "?api_key=" + apiKey + "&sort_by=release_date.asc" + "&with_people=" + id + "&page=" + i;
-        	d3.json(requestUrl, function(json){
-                console.log(json);
-                for(var j=0; j<json.results.length; j++) {
-                	var obj = json.results[i];
-                    var film = new Film(obj.title, obj.id, obj.overview, obj.poster_path, obj.backdrop_path, obj.genre_ids, obj.release_date, obj.vote_average, obj.vote_count);
-                    personFilmData.push(film);
-                }
-            });
+        for (var i = 2; i <= totalPages; i++) {
+            var requestUrl = baseUrl + "discover/movie" + "?api_key=" + apiKey + "&sort_by=release_date.asc" + "&with_people=" + self.id + "&page=" + i;
+        	d3.json(requestUrl, function(json) {
+        		self.saveFilmResults(json);
+        	});
         }
     }
-
-    clearResultsDiv();
-    showFilmDataForPersonSelected(personFilmData);
-    console.log("personFilmData");
-    console.log(personFilmData);
 }
 
-// Create an array of film objects for the person chosen
-function createArrayOfFilmObjects(data) {
-    var personFilmData = [];
+Person.prototype.saveFilmResults = function saveFilmResults(json) {
+	var self = this;
+	
+	self.pages.push(json.results);
+	if(self.pages.length === self.totalPages) {
+		self.addAllFilms();
+	}
+}
 
+Person.prototype.addAllFilms = function addAllFilms() {
+	var self = this;
+	
+	for(var i=0; i<self.pages.length; i++) {
+		var page = self.pages[i];
+	    for(var j=0; j<page.length; j++) {
+	    	var obj = page[j];
+	    	//only add films that have a release date or have a zero rating
+	    	if(obj.release_date && obj.vote_average) {
+	    		var film = new Film(
+				    			obj.title,
+				    			obj.id,
+				    			obj.overview,
+				    			obj.poster_path,
+				    			obj.backdrop_path,
+				    			obj.genre_ids,
+				    			obj.release_date,
+				    			obj.vote_average,
+				    			obj.vote_count);
+	    		self.films.push(film);
+	    	}
+	    }
+    }
 
-
-    return personFilmData;
+    self.films.sort(function(a, b) {
+        return parseInt(a.getYear()) - parseInt(b.getYear());
+    });
+    clearResultsDiv();
+    self.showFilmData();
 }
 
 // Show all film data for the person selected
-function showFilmDataForPersonSelected(data) {
-	for(var i=0; i<data.length; i++) {
-		var obj = data[i];
+Person.prototype.showFilmData = function showFilmData() {
+	var self = this;
+	
+	for(var i=0; i<self.films.length; i++) {
+		var obj = self.films[i];
         d3.selectAll('#person-film-results')
         	.append('p')
         	.attr('class','film-info')
         	.text(obj.title + " (" + obj.getYear() + ")  " + "Rating: " + obj.vote_average);
     }
-    console.log(data);
 }
 
 function clearResultsDiv() {
