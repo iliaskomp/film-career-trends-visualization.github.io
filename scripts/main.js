@@ -1,5 +1,6 @@
 var baseUrl = "https://api.themoviedb.org/3/";
 var apiKey = "1d9b5b41baa47611c75d9537cd59c830";
+var people = [];
 
 // When submitting the form, get persons json for query string
 d3.selectAll('#search-form').on('submit', function(){
@@ -27,13 +28,16 @@ function showPersonResults(json) {
         	.attr('id', id)
         	.text(data[i].name)
         	.on('click', function() {
-        		new Person(data[this.id].id).getFilmData();
+        		var person = new Person(data[this.id].id, data[this.id].name);
+        		people.push(person);
+        		person.getFilmData();
          	});
     }
 }
 
-function Person (id) {
+function Person (id, name) {
 	this.id = id;
+	this.name = name;
 	this.films = [];
 	this.pages = [];
 	this.totalPages;
@@ -101,7 +105,7 @@ Person.prototype.addAllFilms = function addAllFilms() {
     self.films.sort(function(a, b) {
         return parseInt(a.getYear()) - parseInt(b.getYear());
     });
-    clearResultsDiv();
+    
     self.showFilmData();
 }
 
@@ -109,18 +113,24 @@ Person.prototype.addAllFilms = function addAllFilms() {
 Person.prototype.showFilmData = function showFilmData() {
 	var self = this;
 	
+	var row = d3.selectAll('#person-film-results tbody').append('tr');
+	row.append('td').text(self.name);
+	row.append('td').text(self.getAverageFilmRating());
+}
+
+Person.prototype.getAverageFilmRating = function getAverageFilmRating() {
+	var self = this;
+	var ratingSum = 0;
+	
 	for(var i=0; i<self.films.length; i++) {
-		var obj = self.films[i];
-        d3.selectAll('#person-film-results')
-        	.append('p')
-        	.attr('class','film-info')
-        	.text(obj.title + " (" + obj.getYear() + ")  " + "Rating: " + obj.vote_average);
-    }
+		ratingSum += self.films[i].vote_average;
+	}
+	
+	return Math.round(ratingSum / self.films.length * 100) / 100;
 }
 
 function clearResultsDiv() {
 	d3.selectAll('#person-results').html('');
-	d3.selectAll('#person-film-results').html('');
 }
 
 function Film (title, id, overview, poster_path, backdrop_path, genre_ids, release_date, vote_average, vote_count) {
