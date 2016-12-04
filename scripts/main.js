@@ -115,8 +115,9 @@ Person.prototype.addAllFilms = function addAllFilms() {
     self.films.sort(function(a, b) {
         return parseInt(a.getYear()) - parseInt(b.getYear());
     });
-    
+
     self.showFilmData();
+    self.showFilmGraph();
 }
 
 // Show all film data for the person selected
@@ -157,6 +158,7 @@ function getPersonIndex(id) {
 
 function clearResultsDiv() {
 	d3.selectAll('#person-results').html('');
+    d3.selectAll("#visualization").html('');
 }
 
 function Film (title, id, overview, poster_path, backdrop_path, genre_ids, release_date, vote_average, vote_count) {
