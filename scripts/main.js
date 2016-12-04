@@ -28,8 +28,8 @@ function showPersonResults(json) {
         	.attr('id', id)
         	.text(data[i].name)
         	.on('click', function() {
+        		if(people.length >= 5) return;
         		var person = new Person(data[this.id].id, data[this.id].name);
-        		people.push(person);
         		person.getFilmData();
          	});
     }
@@ -57,7 +57,7 @@ Person.prototype.processFilmData = function processFilmData (json) {
 	var self = this;
 	self.saveFilmResults(json);
 	self.totalPages = json.total_pages;
-
+	
 	var totalPages = json.total_pages;
     if (totalPages > 1) {
         for (var i = 2; i <= totalPages; i++) {
@@ -101,7 +101,10 @@ Person.prototype.addAllFilms = function addAllFilms() {
 	    	}
 	    }
     }
+	
+	if(self.films.length === 0) return;
 
+	people.push(self);
     self.films.sort(function(a, b) {
         return parseInt(a.getYear()) - parseInt(b.getYear());
     });
@@ -116,6 +119,15 @@ Person.prototype.showFilmData = function showFilmData() {
 	var row = d3.selectAll('#person-film-results tbody').append('tr');
 	row.append('td').text(self.name);
 	row.append('td').text(self.getAverageFilmRating());
+	row.on('click',function() {
+		for(var i=0; i<people.length; i++) {
+			if(self.id === people[i].id) {
+				people.splice(i,1);
+				row.remove();
+				return;
+			}
+		}
+	});
 }
 
 Person.prototype.getAverageFilmRating = function getAverageFilmRating() {
