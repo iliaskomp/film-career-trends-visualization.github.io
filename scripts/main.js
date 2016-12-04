@@ -22,14 +22,21 @@ function showPersonResults(json) {
     clearResultsDiv();
 
     for(var i=0; i<data.length; i++) {
-    	var id = i;
         personResults.append('a')
         	.attr('class','person-result')
-        	.attr('id', id)
+        	.attr('id', i)
         	.text(data[i].name)
         	.on('click', function() {
-        		if(people.length >= 5) return;
-        		var person = new Person(data[this.id].id, data[this.id].name);
+        		var p = data[this.id];
+        		if(getPersonIndex(p.id) !== -1) {
+        			alert("Person already added!");
+        			return;
+        		}
+        		if(people.length >= 5) {
+        			alert("Maximum of 5 people already reached!")
+        			return;
+        		}
+        		var person = new Person(p.id, p.name);
         		person.getFilmData();
          	});
     }
@@ -120,12 +127,11 @@ Person.prototype.showFilmData = function showFilmData() {
 	row.append('td').text(self.name);
 	row.append('td').text(self.getAverageFilmRating());
 	row.on('click',function() {
-		for(var i=0; i<people.length; i++) {
-			if(self.id === people[i].id) {
-				people.splice(i,1);
-				row.remove();
-				return;
-			}
+		var personIdx = getPersonIndex(self.id);
+		if (personIdx !== -1) {
+			people.splice(personIdx,1);
+			row.remove();
+			return;
 		}
 	});
 }
@@ -139,6 +145,14 @@ Person.prototype.getAverageFilmRating = function getAverageFilmRating() {
 	}
 	
 	return Math.round(ratingSum / self.films.length * 100) / 100;
+}
+
+function getPersonIndex(id) {
+	for(var i=0; i<people.length; i++) {
+		if( people[i].id === id ) return i;
+	}
+	
+	return -1;
 }
 
 function clearResultsDiv() {
