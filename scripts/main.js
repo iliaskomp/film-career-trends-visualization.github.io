@@ -130,6 +130,7 @@ Person.prototype.showFilmData = function showFilmData() {
 	row.on('click',function() {
 		var personIdx = getPersonIndex(self.id);
 		if (personIdx !== -1) {
+			self.removeGraphLine();
 			people.splice(personIdx,1);
 			row.remove();
 			return;
@@ -158,7 +159,6 @@ function getPersonIndex(id) {
 
 function clearResultsDiv() {
 	d3.selectAll('#person-results').html('');
-    d3.selectAll("#visualization").html('');
 }
 
 function Film (title, id, overview, poster_path, backdrop_path, genre_ids, release_date, vote_average, vote_count) {
@@ -171,6 +171,8 @@ function Film (title, id, overview, poster_path, backdrop_path, genre_ids, relea
     this.release_date = release_date;
     this.vote_average = vote_average;
     this.vote_count = vote_count;
+    
+    this.graphLine = null;
 }
 
 Film.prototype.getYear = function() {
