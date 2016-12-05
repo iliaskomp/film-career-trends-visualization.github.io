@@ -1,6 +1,5 @@
 var baseUrl = "https://api.themoviedb.org/3/";
 var apiKey = "1d9b5b41baa47611c75d9537cd59c830";
-var people = [];
 
 // When submitting the form, get persons json for query string
 d3.selectAll('#search-form').on('submit', function(){
@@ -32,7 +31,7 @@ function showPersonResults(json) {
         			alert("Person already added!");
         			return;
         		}
-        		if(people.length >= 5) {
+        		if(lineGraph.people.length >= 5) {
         			alert("Maximum of 5 people already reached!")
         			return;
         		}
@@ -111,13 +110,13 @@ Person.prototype.addAllFilms = function addAllFilms() {
 	
 	if(self.films.length === 0) return;
 
-	people.push(self);
+	lineGraph.people.push(self);
     self.films.sort(function(a, b) {
         return parseInt(a.getYear()) - parseInt(b.getYear());
     });
 
     self.showFilmData();
-    self.showFilmGraph();
+    lineGraph.drawGraph();
 }
 
 // Show all film data for the person selected
@@ -131,7 +130,7 @@ Person.prototype.showFilmData = function showFilmData() {
 		var personIdx = getPersonIndex(self.id);
 		if (personIdx !== -1) {
 			self.removeGraphLine();
-			people.splice(personIdx,1);
+			lineGraph.people.splice(personIdx,1);
 			row.remove();
 			return;
 		}
@@ -149,9 +148,16 @@ Person.prototype.getAverageFilmRating = function getAverageFilmRating() {
 	return Math.round(ratingSum / self.films.length * 100) / 100;
 }
 
+Person.prototype.getMinDate = function getMinDate () {
+	return this.films[0].getYear();
+}
+Person.prototype.getMaxDate = function getMaxDate () {
+	return this.films[this.films.length-1].getYear();
+}
+
 function getPersonIndex(id) {
-	for(var i=0; i<people.length; i++) {
-		if( people[i].id === id ) return i;
+	for(var i=0; i<lineGraph.people.length; i++) {
+		if( lineGraph.people[i].id === id ) return i;
 	}
 	
 	return -1;
