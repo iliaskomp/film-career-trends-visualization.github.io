@@ -148,6 +148,13 @@ Person.prototype.getAverageFilmRating = function getAverageFilmRating() {
 	return Math.round(ratingSum / self.films.length * 100) / 100;
 }
 
+Person.prototype.getMinDate = function getMinDate () {
+	return this.films[0].getYear();
+}
+Person.prototype.getMaxDate = function getMaxDate () {
+	return this.films[this.films.length-1].getYear();
+}
+
 function getPersonIndex(id) {
 	for(var i=0; i<lineGraph.people.length; i++) {
 		if( lineGraph.people[i].id === id ) return i;
