@@ -1,3 +1,41 @@
+function LineGraph() {
+	this.people = [];
+}
+
+LineGraph.prototype.getDateRange = function getDateRange() {
+	var minDate; var maxDate;
+	
+	for(var i=0; i<self.people.length; i++) {
+		var person = self.people[i];
+		var personMin = person.getMinDate();
+		var personMax = person.getMaxDate();
+		
+		if(!minDate || personMin < minDate) {
+			minDate = personMin;
+		}
+		if(!maxDate || personMax > maxDate) {
+			maxDate = personMax;
+		}
+	}
+	
+	return {min: minDate, max: maxDate};
+}
+
+LineGraph.prototype.drawGraph = function drawGraph() {
+	var self = this;
+	
+	//self.drawGraphAxis();
+	
+	for(var i=0; i<self.people.length; i++) {
+		var person = self.people[i];
+		person.showFilmGraph();
+	}
+}
+
+LineGraph.prototype.drawGraphAxis = function drawGraphAxis() {
+	var self = this;
+}
+
 var graphLines = {};
 var filmGraphData = [];
 var lineColors = [
@@ -95,12 +133,12 @@ Person.prototype.showFilmGraph = function showFilmGraph() {
     .y(function(d) {
       return yRange(d.vote_average);
     })
-    .interpolate('linear');
+    .interpolate('bundle');
 
     self.graphLine =
     	vis.append('svg:path')
 		    .attr('d', lineFunc(self.films))
-		    .attr('stroke', lineColors[people.length-1])
+		    .attr('stroke', lineColors[lineGraph.people.length-1])
 		    .attr('stroke-width', 2)
 		    .attr('fill', 'none');
 }
@@ -110,3 +148,5 @@ Person.prototype.removeGraphLine = function removeGraphLine() {
 	self.graphLine.remove();
 	self.graphLine = null;
 }
+
+var lineGraph = new LineGraph();
