@@ -1,29 +1,12 @@
 
 var filmGraphData = [];
 
-// for (var i = 0; i < filmDataFull.results.length; i++) {
-//   var filmForGraph = new FilmForGraph(filmDataFull.results[i].release_date.substring(0, 4), filmDataFull.results[i].vote_average);
-//   filmGraphData.push(filmForGraph);
-// }
-
-function FilmForGraph(year, rating) {
-  this.year = year.substring(0, 4);
-  this.rating = rating;
-}
-
 Person.prototype.showFilmGraph = function showFilmGraph() {
   var filmGraphData = [];
   var self = this;
 
   console.log("showFilmGraph");
   console.log(self.films);
-
-  for(var i=0; i<self.films.length; i++) {
-    var obj = self.films[i];
-    filmForGraph = new FilmForGraph(obj.getYear(), obj.vote_average);
-    filmGraphData.push(filmForGraph);
-  }
-
 
   var vis = d3.select('#visualization'),
   WIDTH = 1000,
@@ -34,18 +17,6 @@ Person.prototype.showFilmGraph = function showFilmGraph() {
     bottom: 20,
     left: 50
   },    
-
-  // xRange = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([d3.min(filmGraphData, function(d) {    
-  //   return d.year;
-  // }), d3.max(filmGraphData, function(d) {  
-  //   return d.year;
-  // })]),
-
-  // yRange = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([d3.min(filmGraphData, function(d) {
-  //   return 0;
-  // }), d3.max(filmGraphData, function(d) {
-  //   return 10;
-  // })]),
 
   xRange = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([d3.min(self.films, function(d) {    
     return d.getYear();
@@ -69,6 +40,7 @@ Person.prototype.showFilmGraph = function showFilmGraph() {
     .tickSize(2)
     .orient('left')
     .tickSubdivide(true);
+
 
     vis.append('svg:g')
     .attr('class', 'x axis')
