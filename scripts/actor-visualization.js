@@ -54,14 +54,15 @@ LineGraph.prototype.drawGraphAxis = function drawGraphAxis() {
 	var dateRange = self.getDateRange(),
 		xAxis,
 		yAxis;
-	
-	self.xRange = d3.scale.linear().range([self.MARGINS.left, self.WIDTH - self.MARGINS.right]).domain(dateRange),
+	    
+	self.xRange = d3.time.scale().range([self.MARGINS.left, self.WIDTH - self.MARGINS.right]).domain(dateRange),
 	self.yRange = d3.scale.linear().range([self.HEIGHT - self.MARGINS.top, self.MARGINS.bottom]).domain([0,10]),
 
 	xAxis = d3.svg.axis()
 	    .scale(self.xRange)
 	    .tickSize(2)
-	    .tickSubdivide(true),
+	    .tickSubdivide(true)
+	    .tickFormat(d3.time.format("%Y")),
     yAxis = d3.svg.axis()
 	    .scale(self.yRange)
 	    .tickSize(2)
@@ -87,7 +88,7 @@ LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 			
 		var lineFunc = d3.svg.line()
 			    .x(function(d) {
-			      return self.xRange(d.getYear());
+			      return self.xRange(d.getReleaseDateObj());
 			    })
 			    .y(function(d) {
 			      return self.yRange(d.vote_average);

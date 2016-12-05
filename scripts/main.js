@@ -149,10 +149,10 @@ Person.prototype.getAverageFilmRating = function getAverageFilmRating() {
 }
 
 Person.prototype.getMinDate = function getMinDate () {
-	return this.films[0].getYear();
+	return this.films[0].getReleaseDateObj();
 }
 Person.prototype.getMaxDate = function getMaxDate () {
-	return this.films[this.films.length-1].getYear();
+	return this.films[this.films.length-1].getReleaseDateObj();
 }
 
 function getPersonIndex(id) {
@@ -181,7 +181,12 @@ function Film (title, id, overview, poster_path, backdrop_path, genre_ids, relea
     this.graphLine = null;
 }
 
-Film.prototype.getYear = function() {
+Film.prototype.getReleaseDateObj = function getReleaseDateObj() {
+	var d = new Date(this.release_date);
+	return d;
+}
+
+Film.prototype.getYear = function getYear() {
 	return this.release_date.substring(0,4);
 }
 
