@@ -1,5 +1,12 @@
-
+var graphLines = {};
 var filmGraphData = [];
+var lineColors = [
+                  '#ff0000',
+                  '#00ff00',
+                  '#0000ff',
+                  '#0f0f0f',
+                  '#930039'
+                  ]
 
 Person.prototype.showFilmGraph = function showFilmGraph() {
   var filmGraphData = [];
@@ -41,12 +48,11 @@ Person.prototype.showFilmGraph = function showFilmGraph() {
     .orient('left')
     .tickSubdivide(true);
 
-
-    vis.append('svg:g')
+    /*vis.append('svg:g')
     .attr('class', 'x axis')
     .attr('transform', 'translate(0,' + (HEIGHT - MARGINS.bottom) + ')')
     .call(xAxis);
-
+     */
     vis.append('svg:g')
     .attr('class', 'y axis')
     .attr('transform', 'translate(' + (MARGINS.left) + ',0)')
@@ -62,10 +68,16 @@ Person.prototype.showFilmGraph = function showFilmGraph() {
     })
     .interpolate('linear');
 
-    vis.append('svg:path')
-    .attr('d', lineFunc(self.films))
-    .attr('stroke', 'blue')
-    .attr('stroke-width', 2)
-    .attr('fill', 'none');
+    self.graphLine =
+    	vis.append('svg:path')
+		    .attr('d', lineFunc(self.films))
+		    .attr('stroke', lineColors[people.length-1])
+		    .attr('stroke-width', 2)
+		    .attr('fill', 'none');
+}
 
-  }
+Person.prototype.removeGraphLine = function removeGraphLine() {
+	var self = this;
+	self.graphLine.remove();
+	self.graphLine = null;
+}

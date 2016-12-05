@@ -1,5 +1,6 @@
 var baseUrl = "https://api.themoviedb.org/3/";
 var apiKey = "1d9b5b41baa47611c75d9537cd59c830";
+var people = [];
 
 // When submitting the form, get persons json for query string
 d3.selectAll('#search-form').on('submit', function(){
@@ -21,19 +22,29 @@ function showPersonResults(json) {
     clearResultsDiv();
 
     for(var i=0; i<data.length; i++) {
-    	var id = i;
         personResults.append('a')
         	.attr('class','person-result')
-        	.attr('id', id)
+        	.attr('id', i)
         	.text(data[i].name)
         	.on('click', function() {
-        		new Person(data[this.id].id).getFilmData();
+        		var p = data[this.id];
+        		if(getPersonIndex(p.id) !== -1) {
+        			alert("Person already added!");
+        			return;
+        		}
+        		if(people.length >= 5) {
+        			alert("Maximum of 5 people already reached!")
+        			return;
+        		}
+        		var person = new Person(p.id, p.name);
+        		person.getFilmData();
          	});
     }
 }
 
-function Person (id) {
+function Person (id, name) {
 	this.id = id;
+	this.name = name;
 	this.films = [];
 	this.pages = [];
 	this.totalPages;
@@ -53,7 +64,7 @@ Person.prototype.processFilmData = function processFilmData (json) {
 	var self = this;
 	self.saveFilmResults(json);
 	self.totalPages = json.total_pages;
-
+	
 	var totalPages = json.total_pages;
     if (totalPages > 1) {
         for (var i = 2; i <= totalPages; i++) {
@@ -97,12 +108,15 @@ Person.prototype.addAllFilms = function addAllFilms() {
 	    	}
 	    }
     }
+	
+	if(self.films.length === 0) return;
 
+	people.push(self);
     self.films.sort(function(a, b) {
         return parseInt(a.getYear()) - parseInt(b.getYear());
     });
-    clearResultsDiv();
-  //  self.showFilmData();
+
+    self.showFilmData();
     self.showFilmGraph();
 }
 
@@ -110,19 +124,41 @@ Person.prototype.addAllFilms = function addAllFilms() {
 Person.prototype.showFilmData = function showFilmData() {
 	var self = this;
 	
+	var row = d3.selectAll('#person-film-results tbody').append('tr');
+	row.append('td').text(self.name);
+	row.append('td').text(self.getAverageFilmRating());
+	row.on('click',function() {
+		var personIdx = getPersonIndex(self.id);
+		if (personIdx !== -1) {
+			self.removeGraphLine();
+			people.splice(personIdx,1);
+			row.remove();
+			return;
+		}
+	});
+}
+
+Person.prototype.getAverageFilmRating = function getAverageFilmRating() {
+	var self = this;
+	var ratingSum = 0;
+	
 	for(var i=0; i<self.films.length; i++) {
-		var obj = self.films[i];
-        d3.selectAll('#person-film-results')
-        	.append('p')
-        	.attr('class','film-info')
-        	.text(obj.title + " (" + obj.getYear() + ")  " + "Rating: " + obj.vote_average);
-    }
+		ratingSum += self.films[i].vote_average;
+	}
+	
+	return Math.round(ratingSum / self.films.length * 100) / 100;
+}
+
+function getPersonIndex(id) {
+	for(var i=0; i<people.length; i++) {
+		if( people[i].id === id ) return i;
+	}
+	
+	return -1;
 }
 
 function clearResultsDiv() {
 	d3.selectAll('#person-results').html('');
-	d3.selectAll('#person-film-results').html('');
-    d3.selectAll("#visualization").html('');
 }
 
 function Film (title, id, overview, poster_path, backdrop_path, genre_ids, release_date, vote_average, vote_count) {
@@ -135,6 +171,8 @@ function Film (title, id, overview, poster_path, backdrop_path, genre_ids, relea
     this.release_date = release_date;
     this.vote_average = vote_average;
     this.vote_count = vote_count;
+    
+    this.graphLine = null;
 }
 
 Film.prototype.getYear = function() {

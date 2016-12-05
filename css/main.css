@@ -6,3 +6,9 @@
 .film-info {
     display: block;
 }
+
+
+#person-results,
+#person-film-results {
+	float: left;
+}
