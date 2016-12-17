@@ -142,18 +142,12 @@ Person.prototype.showFilmData = function showFilmData() {
 		.on('click',function() {
 			var personIdx = getPersonIndex(self.id);
 			if (personIdx !== -1) {
-				self.removeGraphLine();
 				lineGraph.people.splice(personIdx,1);
+			    lineGraph.drawGraph();
 				self.listing.remove();
 				return;
 			}
 		});
-}
-
-Person.prototype.removeGraphLine = function removeGraphLine() {
-	var self = this;
-	self.graphLine.remove();
-	self.graphLine = null;
 }
 
 Person.prototype.selectPerson = function selectPerson() {
