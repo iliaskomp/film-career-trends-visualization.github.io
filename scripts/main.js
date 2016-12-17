@@ -133,7 +133,6 @@ Person.prototype.showFilmData = function showFilmData() {
 			var personIdx = getPersonIndex(self.id);
 			self.selectPerson();
 		});
-	//row.append('td').text(self.getAverageFilmRating());
 	self.listing.append('span')
 		.text('x')
 		.attr('class','person-remove')
@@ -142,7 +141,7 @@ Person.prototype.showFilmData = function showFilmData() {
 			if (personIdx !== -1) {
 				self.removeGraphLine();
 				lineGraph.people.splice(personIdx,1);
-				row.remove();
+				self.listing.remove();
 				return;
 			}
 		});
@@ -156,6 +155,8 @@ Person.prototype.removeGraphLine = function removeGraphLine() {
 
 Person.prototype.selectPerson = function highlightGraphLine() {
 	var self = this;
+	
+	lineGraph.deselectAll();
 
 	if(self.selected) {
 		this.graphLine.transition().style('opacity',0.4);
@@ -165,7 +166,7 @@ Person.prototype.selectPerson = function highlightGraphLine() {
 		this.graphLine.transition().style('opacity',1);
 		this.listing.attr('class','selected');
 	}
-	self.selected = !self.selected;
+	self.selected = !self.selected;	
 }
 
 Person.prototype.getAverageFilmRating = function getAverageFilmRating() {

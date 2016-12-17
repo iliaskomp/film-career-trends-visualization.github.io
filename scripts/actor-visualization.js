@@ -11,7 +11,7 @@ function LineGraph() {
 		    bottom: 20,
 		    left: 50
 		};
-	this.lineColors = [
+	this.lineColors = {
 	    	'#ff0000',
 	    	'#00ff00',
 	    	'#0000ff',
