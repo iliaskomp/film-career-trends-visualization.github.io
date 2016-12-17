@@ -120,6 +120,8 @@ Person.prototype.addAllFilms = function addAllFilms() {
 
     lineGraph.drawGraph();
     self.showFilmData();
+    lineGraph.deselectAllPeople();
+    self.select();
 }
 
 // Show all film data for the person selected
