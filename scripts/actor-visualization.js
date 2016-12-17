@@ -122,4 +122,13 @@ LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 	}
 }
 
+LineGraph.prototype.deselectAllPeople = function deselectAllPeople() {
+	var self = this;
+	
+	for(var i=0; i<self.people.length; i++) {
+		var person = self.people[i];
+		person.deselect();
+	}
+}
+
 var lineGraph = new LineGraph();

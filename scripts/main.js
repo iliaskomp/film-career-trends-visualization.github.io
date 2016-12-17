@@ -134,7 +134,12 @@ Person.prototype.showFilmData = function showFilmData() {
 		.text(self.name)
 		.on('click', function() {
 			var personIdx = getPersonIndex(self.id);
-			self.selectPerson();
+			if(self.selected) {
+				self.deselect();
+			} else {
+				lineGraph.deselectAllPeople();
+				self.select();				
+			}
 		});
 	self.listing.append('span')
 		.text('x')
@@ -150,18 +155,20 @@ Person.prototype.showFilmData = function showFilmData() {
 		});
 }
 
-Person.prototype.selectPerson = function selectPerson() {
+Person.prototype.select = function select() {
 	var self = this;
-	
-	if(self.selected) {
-		self.graphLine.transition().style('opacity',0.5).attr('stroke-width',1);
-		self.listing.attr('class','');
-	}
-	else {
-		self.graphLine.transition().style('opacity',1).attr('stroke-width',2);
-		self.listing.attr('class','selected');
-	}
-	self.selected = !self.selected;	
+		
+	self.graphLine.transition().style('opacity',1).attr('stroke-width',2);
+	self.listing.attr('class','selected');
+	self.selected = true;	
+}
+
+Person.prototype.deselect = function deselect() {
+	var self = this;
+
+	self.graphLine.transition().style('opacity',0.5).attr('stroke-width',1);
+	self.listing.attr('class','');
+	self.selected = false;
 }
 
 Person.prototype.getAverageFilmRating = function getAverageFilmRating() {
