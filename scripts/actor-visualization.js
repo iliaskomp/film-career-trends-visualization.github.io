@@ -100,14 +100,9 @@ LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 			    .attr('d', lineFunc(person.films))
 			    .attr('stroke', self.lineColors[i])
 			    .attr('stroke-width', 2)
-			    .attr('fill', 'none');
+			    .attr('fill', 'none')
+	    		.style('opacity', 0.3);
 	}
-}
-
-Person.prototype.removeGraphLine = function removeGraphLine() {
-	var self = this;
-	self.graphLine.remove();
-	self.graphLine = null;
 }
 
 var lineGraph = new LineGraph();

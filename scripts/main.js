@@ -47,6 +47,8 @@ function Person (id, name) {
 	this.films = [];
 	this.pages = [];
 	this.totalPages;
+	this.graphLine = null;
+	this.selected = false;
 }
 
 Person.prototype.getFilmData = function getFilmData () {
@@ -124,17 +126,44 @@ Person.prototype.showFilmData = function showFilmData() {
 	var self = this;
 	
 	var row = d3.selectAll('#person-film-results tbody').append('tr');
-	row.append('td').text(self.name);
+	row.append('td')
+		.text(self.name)
+		.attr('class','actor-name')
+		.on('click', function() {
+			var personIdx = getPersonIndex(self.id);
+			self.highlightGraphLine();
+		});
 	row.append('td').text(self.getAverageFilmRating());
-	row.on('click',function() {
-		var personIdx = getPersonIndex(self.id);
-		if (personIdx !== -1) {
-			self.removeGraphLine();
-			lineGraph.people.splice(personIdx,1);
-			row.remove();
-			return;
-		}
-	});
+	row.append('td')
+		.text("Delete")
+		.attr('class','actor-remove')
+		.on('click',function() {
+			var personIdx = getPersonIndex(self.id);
+			if (personIdx !== -1) {
+				self.removeGraphLine();
+				lineGraph.people.splice(personIdx,1);
+				row.remove();
+				return;
+			}
+		});
+}
+
+Person.prototype.removeGraphLine = function removeGraphLine() {
+	var self = this;
+	self.graphLine.remove();
+	self.graphLine = null;
+}
+
+Person.prototype.highlightGraphLine = function highlightGraphLine() {
+	var self = this;
+
+	if(self.selected) {
+		this.graphLine.transition().style('opacity',0.4);
+	}
+	else {
+		this.graphLine.transition().style('opacity',1);
+	}
+	self.selected = !self.selected;
 }
 
 Person.prototype.getAverageFilmRating = function getAverageFilmRating() {
