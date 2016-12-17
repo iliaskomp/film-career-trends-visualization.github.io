@@ -131,4 +131,14 @@ LineGraph.prototype.deselectAllPeople = function deselectAllPeople() {
 	}
 }
 
+LineGraph.prototype.getPersonIndex = function getPersonIndex(id) {
+	var self = this;
+	
+	for(var i=0; i<self.people.length; i++) {
+		if( self.people[i].id === id ) return i;
+	}
+	
+	return -1;
+}
+
 var lineGraph = new LineGraph();
