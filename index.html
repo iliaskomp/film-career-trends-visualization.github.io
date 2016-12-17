@@ -1,9 +1,9 @@
 <!DOCTYPE html>
- <html lang="en"> 
-<html>
+<html lang="en"> 
 <head>
     <meta charset="utf-8"/>
 	<title>Trends</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 
@@ -11,26 +11,16 @@
 	<form id="search-form" name="search-form">
 		<input type="text" name="search" id="search-field" placeholder="Search actors..">
 		<button type="submit" id="search-button">Search</button>
+
+	    <ul id="person-results">
+	    </ul>
 	</form>
 
-    <div id="results">
-        <div id="person-results"></div>
-        <table id="person-film-results">
-        	<thead>
-        		<tr>
-        			<th>Person</th>
-        			<th>Average Rating</th>
-        			<th></th>
-        		</tr>
-        	</thead>
-        	
-        	<tbody>
-        	</tbody>
-        </table>    
-    </div>
 
-    <svg id="visualization" width="1000" height="500"></svg>
-
+	<section id="visualization-container">
+		<ul id="chosen-people"></ul>
+    	<svg id="visualization" width="1000" height="500"></svg>
+	</section>
 
 </body>
  

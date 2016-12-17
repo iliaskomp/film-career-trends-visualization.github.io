@@ -8,7 +8,34 @@
 }
 
 
-#person-results,
-#person-film-results {
+#search-form,
+#visualization-container {
 	float: left;
+}
+
+#chosen-people {
+	list-style: none outside;
+}
+#chosen-people li {
+	border: 1px solid #666;
+	cursor:  pointer;
+	display: inline-block;
+	margin: 0 5px 0 0;
+}
+#chosen-people li.selected {
+	border-color: #000;
+}
+#chosen-people li span {
+	display: inline-block;
+	padding: 5px;
+}
+#chosen-people .person-name {
+	background: #666;
+	color: #fff;
+}
+#chosen-people li.selected .person-name {
+	background: #333;
+}
+#chosen-people li .person-remove {
+	background: #999;
 }

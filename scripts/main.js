@@ -17,11 +17,10 @@ d3.selectAll('#search-form').on('submit', function(){
 function showPersonResults(json) {
 	var data = json.results;
     var personResults = d3.selectAll('#person-results');
-    // personResults.empty();
     clearResultsDiv();
 
     for(var i=0; i<data.length; i++) {
-        personResults.append('a')
+        personResults.append('li')
         	.attr('class','person-result')
         	.attr('id', i)
         	.text(data[i].name)
@@ -49,6 +48,7 @@ function Person (id, name) {
 	this.totalPages;
 	this.graphLine = null;
 	this.selected = false;
+	this.listing = false;
 }
 
 Person.prototype.getFilmData = function getFilmData () {
@@ -125,18 +125,18 @@ Person.prototype.addAllFilms = function addAllFilms() {
 Person.prototype.showFilmData = function showFilmData() {
 	var self = this;
 	
-	var row = d3.selectAll('#person-film-results tbody').append('tr');
-	row.append('td')
+	self.listing = d3.selectAll('#chosen-people').append('li');
+	self.listing.append('span')
 		.text(self.name)
-		.attr('class','actor-name')
+		.attr('class','person-name')
 		.on('click', function() {
 			var personIdx = getPersonIndex(self.id);
-			self.highlightGraphLine();
+			self.selectPerson();
 		});
-	row.append('td').text(self.getAverageFilmRating());
-	row.append('td')
-		.text("Delete")
-		.attr('class','actor-remove')
+	//row.append('td').text(self.getAverageFilmRating());
+	self.listing.append('span')
+		.text('x')
+		.attr('class','person-remove')
 		.on('click',function() {
 			var personIdx = getPersonIndex(self.id);
 			if (personIdx !== -1) {
@@ -154,14 +154,16 @@ Person.prototype.removeGraphLine = function removeGraphLine() {
 	self.graphLine = null;
 }
 
-Person.prototype.highlightGraphLine = function highlightGraphLine() {
+Person.prototype.selectPerson = function highlightGraphLine() {
 	var self = this;
 
 	if(self.selected) {
 		this.graphLine.transition().style('opacity',0.4);
+		this.listing.attr('class','');
 	}
 	else {
 		this.graphLine.transition().style('opacity',1);
+		this.listing.attr('class','selected');
 	}
 	self.selected = !self.selected;
 }
@@ -206,8 +208,6 @@ function Film (title, id, overview, poster_path, backdrop_path, genre_ids, relea
     this.release_date = release_date;
     this.vote_average = vote_average;
     this.vote_count = vote_count;
-    
-    this.graphLine = null;
 }
 
 Film.prototype.getReleaseDateObj = function getReleaseDateObj() {
