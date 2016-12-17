@@ -119,6 +119,8 @@ LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 			    .attr('stroke-width', 1)
 			    .attr('fill', 'none')
 	    		.style('opacity', 0.5);
+	    
+	    if(person.selected) person.select();
 	}
 }
 
