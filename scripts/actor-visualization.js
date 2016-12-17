@@ -11,12 +11,12 @@ function LineGraph() {
 		    bottom: 20,
 		    left: 50
 		};
-	this.lineColors = {
-	    	'#ff0000',
-	    	'#00ff00',
-	    	'#0000ff',
-	    	'#0f0f0f',
-	    	'#930039'
+	this.lineColors = [
+	    	'#cc0000',
+	    	'#00cc00',
+	    	'#0000cc',
+	    	'#ff8040',
+	    	'#00c0c0'
 	    ];
 }
 
@@ -80,6 +80,20 @@ LineGraph.prototype.drawGraphAxis = function drawGraphAxis() {
 	    .call(yAxis);
 }
 
+LineGraph.prototype.getNextAvailableColor = function getNextAvailableColor() {
+	var self = this;
+	
+	for(var i=0; i<self.lineColors.length; i++) {
+		var found = false;
+		for(var j=0; j<self.people.length; j++) {
+			if(self.people[j].color === i) {
+				found = true;
+			}
+		}
+		if(!found) return i;
+	}
+}
+
 LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 	var self = this;
 	
@@ -95,13 +109,16 @@ LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 			    })
 			    .interpolate('bundle');
 	
+		if(person.color < 0) {
+			person.color = self.getNextAvailableColor();
+		}
 	    person.graphLine =
 	    	self.vis.append('svg:path')
 			    .attr('d', lineFunc(person.films))
-			    .attr('stroke', self.lineColors[i])
-			    .attr('stroke-width', 2)
+			    .attr('stroke', self.lineColors[person.color])
+			    .attr('stroke-width', 1)
 			    .attr('fill', 'none')
-	    		.style('opacity', 0.3);
+	    		.style('opacity', 0.5);
 	}
 }
 

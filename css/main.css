@@ -17,25 +17,30 @@
 	list-style: none outside;
 }
 #chosen-people li {
+	background: #ddd;
 	border: 1px solid #666;
 	cursor:  pointer;
 	display: inline-block;
 	margin: 0 5px 0 0;
 }
-#chosen-people li.selected {
+#chosen-people .selected {
 	border-color: #000;
 }
-#chosen-people li span {
+#chosen-people span {
 	display: inline-block;
 	padding: 5px;
 }
-#chosen-people .person-name {
+#chosen-people .person-remove {
 	background: #666;
 	color: #fff;
 }
-#chosen-people li.selected .person-name {
-	background: #333;
+#chosen-people .person-color {
+	margin-left: 5px;
+	opacity: 0.3;
 }
-#chosen-people li .person-remove {
-	background: #999;
-}
+#chosen-people .selected .person-color {opacity: 1;}
+#chosen-people .person-color-0 {background: #cc0000;}
+#chosen-people .person-color-1 {background: #00cc00;}
+#chosen-people .person-color-2 {background: #0000cc;}
+#chosen-people .person-color-3 {background: #ff8040;}
+#chosen-people .person-color-4 {background: #00c0c0;}

@@ -49,6 +49,7 @@ function Person (id, name) {
 	this.graphLine = null;
 	this.selected = false;
 	this.listing = false;
+	this.color = -1;
 }
 
 Person.prototype.getFilmData = function getFilmData () {
@@ -117,8 +118,8 @@ Person.prototype.addAllFilms = function addAllFilms() {
         return parseInt(a.getYear()) - parseInt(b.getYear());
     });
 
-    self.showFilmData();
     lineGraph.drawGraph();
+    self.showFilmData();
 }
 
 // Show all film data for the person selected
@@ -127,8 +128,10 @@ Person.prototype.showFilmData = function showFilmData() {
 	
 	self.listing = d3.selectAll('#chosen-people').append('li');
 	self.listing.append('span')
+		.attr('class','person-color person-color-'+self.color)
+		
+	self.listing.append('span')
 		.text(self.name)
-		.attr('class','person-name')
 		.on('click', function() {
 			var personIdx = getPersonIndex(self.id);
 			self.selectPerson();
@@ -153,18 +156,16 @@ Person.prototype.removeGraphLine = function removeGraphLine() {
 	self.graphLine = null;
 }
 
-Person.prototype.selectPerson = function highlightGraphLine() {
+Person.prototype.selectPerson = function selectPerson() {
 	var self = this;
 	
-	lineGraph.deselectAll();
-
 	if(self.selected) {
-		this.graphLine.transition().style('opacity',0.4);
-		this.listing.attr('class','');
+		self.graphLine.transition().style('opacity',0.5).attr('stroke-width',1);
+		self.listing.attr('class','');
 	}
 	else {
-		this.graphLine.transition().style('opacity',1);
-		this.listing.attr('class','selected');
+		self.graphLine.transition().style('opacity',1).attr('stroke-width',2);
+		self.listing.attr('class','selected');
 	}
 	self.selected = !self.selected;	
 }
