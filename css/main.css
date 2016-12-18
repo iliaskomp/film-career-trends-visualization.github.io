@@ -7,9 +7,9 @@
     display: block;
 }
 
-
 #search-form,
-#visualization-container {
+#visualization-container,
+#movie-details {
 	float: left;
 }
 
@@ -44,3 +44,7 @@
 #chosen-people .person-color-2 {background: #0000cc;}
 #chosen-people .person-color-3 {background: #ff8040;}
 #chosen-people .person-color-4 {background: #00c0c0;}
+
+.movie-dot {
+	cursor: pointer;
+}

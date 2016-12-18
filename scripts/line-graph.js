@@ -121,18 +121,31 @@ LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 	    		.style('opacity', 0.5);
 	    
 	    person.scatterplot = 
-	    	self.vis.selectAll('.dot-'+person.color)
+	    	self.vis.selectAll('.movie-dot-'+person.color)
 	    		.data(person.films)
 	    		.enter().append('circle')
-	    		.attr('class', 'dot dot-'+person.color)
+	    		.attr('class', 'movie-dot movie-dot-'+person.color)
 	    		.attr('r', 3.5)
 	    		.attr('cx', function(d) { return self.xRange(d.getReleaseDateObj()); })
 	    		.attr('cy', function(d) { return self.yRange(d.vote_average); })
 	    		.style('fill', self.lineColors[person.color])
-	    		.style('opacity',0);
+	    		.style('opacity',0)
+	    		.on('mouseover', self.showMovieTooltip)
+	    		.on('mouseout', self.hideMovieTooltip)
+	    		.on('click', self.showMovieDetails);
 	    
 	    if(person.selected) person.select();
 	}
+}
+
+LineGraph.prototype.showMovieTooltip = function showMovieTooltip(film) {
+	d3.selectAll('#movie-title-hover').html(film.title);
+}
+LineGraph.prototype.hideMovieTooltip = function hideMovieTooltip(film) {
+	d3.selectAll('#movie-title-hover').html('');
+}
+LineGraph.prototype.showMovieDetails = function showMovieDetails(film) {
+	d3.selectAll('#movie-details').html(film.title);
 }
 
 LineGraph.prototype.deselectAllPeople = function deselectAllPeople() {
