@@ -5,6 +5,7 @@ function Person (id, name) {
 	this.pages = [];
 	this.totalPages;
 	this.graphLine = null;
+	this.scatterplot = null;
 	this.selected = false;
 	this.listing = false;
 	this.color = -1;
@@ -119,6 +120,7 @@ Person.prototype.select = function select() {
 	var self = this;
 		
 	self.graphLine.transition().style('opacity',1).attr('stroke-width',2);
+	self.scatterplot.transition().style('opacity',1);
 	self.listing.attr('class','selected');
 	self.selected = true;	
 }
@@ -127,6 +129,7 @@ Person.prototype.deselect = function deselect() {
 	var self = this;
 
 	self.graphLine.transition().style('opacity',0.5).attr('stroke-width',1);
+	self.scatterplot.transition().style('opacity',0);
 	self.listing.attr('class','');
 	self.selected = false;
 }

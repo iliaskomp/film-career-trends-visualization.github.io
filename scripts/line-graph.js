@@ -107,7 +107,7 @@ LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 			    .y(function(d) {
 			      return self.yRange(d.vote_average);
 			    })
-			    .interpolate('bundle');
+			    .interpolate('basis');
 	
 		if(person.color < 0) {
 			person.color = self.getNextAvailableColor();
@@ -119,6 +119,17 @@ LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 			    .attr('stroke-width', 1)
 			    .attr('fill', 'none')
 	    		.style('opacity', 0.5);
+	    
+	    person.scatterplot = 
+	    	self.vis.selectAll('.dot-'+person.color)
+	    		.data(person.films)
+	    		.enter().append('circle')
+	    		.attr('class', 'dot dot-'+person.color)
+	    		.attr('r', 3.5)
+	    		.attr('cx', function(d) { return self.xRange(d.getReleaseDateObj()); })
+	    		.attr('cy', function(d) { return self.yRange(d.vote_average); })
+	    		.style('fill', self.lineColors[person.color])
+	    		.style('opacity',0);
 	    
 	    if(person.selected) person.select();
 	}
