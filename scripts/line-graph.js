@@ -145,24 +145,25 @@ LineGraph.prototype.hideMovieTooltip = function hideMovieTooltip(film) {
 	d3.selectAll('#movie-title-hover').html('');
 }
 LineGraph.prototype.showMovieDetails = function showMovieDetails(film) {
-	console.log(film);
 	var baseUrlForPoster = "https://image.tmdb.org/t/p/";
 	var sizeForPoster = "w154";  // "w92",  "w154", "w185", "w342", "w500", "w780", "original"
 	var sizeForBackdrop = "original";
 	
 	var posterUrl = baseUrlForPoster + sizeForPoster + film.poster_path;
 	var backdropUrl = baseUrlForPoster + sizeForBackdrop + film.backdrop_path;
-	
+	var filmUrl = "https://www.themoviedb.org/movie/" + film.id; 
 
-	//	d3.selectAll('#details-title').html(film.title);
-	// d3.selectAll("#details-year").html(" (" + film.getYear() + ")");
-	d3.selectAll('#details-title').html(film.title + " (" + film.getYear() + ")");
+	d3.selectAll('#movie-details').style('display', 'block');
+	d3.selectAll('#details-title').html(film.title + " (" + film.getYear() + ")")
+								  .attr('href', filmUrl);
 	d3.selectAll('#details-rating').html("Rating: " +  film.vote_average);
 	d3.selectAll('#details-overview').html(film.overview);
-	//d3.selectAll('#details-poster').attr('src', posterUrl);
+	d3.selectAll('#details-poster').attr('src', posterUrl);
+	d3.selectAll('#details-genre').html(film.getGenresString());
 
 
-	//d3.selectAll('#visualization-container').style('background-image', backdropUrl);
+	// d3.selectAll('body').style('fill', backdropUrl);
+
 }
 
 LineGraph.prototype.deselectAllPeople = function deselectAllPeople() {

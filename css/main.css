@@ -54,16 +54,41 @@
 #movie-details {
 	float:left;
 	width: 25%;
-	margin: 3em 0 0 3em;
+	margin: 7em 0 0 3em;
 	padding: 1em;
 	/*border: 1px solid black;*/
+	background: #f0ebd2;
+	border-radius: 1em;
+	display: none;
 }
 
 #details-title {
-	/*font-size: 1.5em;*/
+	display: block;
+	font-size: 1.5em;
+	margin-bottom: 1em;
+	text-decoration: none;
+	color: #26b2c9;
 }
 
+#details-poster {
+
+	float:left;
+	margin-right: 1em;
+}
+
+#details-overview {
+	margin-bottom: 1em;
+}
+
+#detail-rating {
+	display:inline-block;
+	border: 1px solid #666;
+	padding: 0.4em 0.7em;
+}
+
+#details-genre {
+	font-style: italic;
+	margin-bottom: 1em;
+}
 #details-title, #details-rating, #details-year {
-	/*float: left;*/
-	/*display: inline-block;*/
 }
