@@ -161,9 +161,11 @@ LineGraph.prototype.showMovieDetails = function showMovieDetails(film) {
 	d3.selectAll('#details-poster').attr('src', posterUrl);
 	d3.selectAll('#details-genre').html(film.getGenresString());
 
-
-	// d3.selectAll('body').style('fill', backdropUrl);
-
+	// Maybe todo backdrop picture 
+	// d3.selectAll('body').style('background-image', "url(" + backdropUrl + ")");
+	// var body = document.getElementsByTagName('body')[0];
+	// body.style.opacity = "0.5";
+	// body.style.filter  = 'alpha(opacity=90)'; // IE fallback
 }
 
 LineGraph.prototype.deselectAllPeople = function deselectAllPeople() {
