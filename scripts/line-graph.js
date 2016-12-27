@@ -138,12 +138,27 @@ LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 	}
 }
 
-LineGraph.prototype.showMovieTooltip = function showMovieTooltip(film) {
-	d3.selectAll('#movie-title-hover').html(film.title);
+LineGraph.prototype.showMovieTooltip = function showMovieTooltip(film) {	
+	var divTooltip = d3.select("body").append("div")	
+    	.attr("class", "tooltip")				
+    	.style("opacity", 0);
+
+    divTooltip.transition()		
+        .duration(200)		
+        .style("opacity", .9);		
+    divTooltip.html(film.title + " (" + film.getYear() + ")")	
+        .style("left", (d3.event.pageX) + "px")		
+        .style("top", (d3.event.pageY - 28) + "px");	
 }
-LineGraph.prototype.hideMovieTooltip = function hideMovieTooltip(film) {
-	d3.selectAll('#movie-title-hover').html('');
+
+LineGraph.prototype.hideMovieTooltip = function hideMovieTooltip(film) {	
+	var divTooltip = d3.selectAll(".tooltip");
+
+    divTooltip.transition()		
+        .duration(500)		
+        .style("opacity", 0);		
 }
+
 LineGraph.prototype.showMovieDetails = function showMovieDetails(film) {
 	var baseUrlForPoster = "https://image.tmdb.org/t/p/";
 	var sizeForPoster = "w154";  // "w92",  "w154", "w185", "w342", "w500", "w780", "original"
