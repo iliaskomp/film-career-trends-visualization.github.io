@@ -11,13 +11,23 @@ function LineGraph() {
 		    bottom: 20,
 		    left: 50
 		};
+	// this.lineColors = [
+	//     	'#cc0000',
+	//     	'#00cc00',
+	//     	'#0000cc',
+	//     	'#ff8040',
+	//     	'#00c0c0'
+	//     ];
+
 	this.lineColors = [
-	    	'#cc0000',
-	    	'#00cc00',
-	    	'#0000cc',
-	    	'#ff8040',
-	    	'#00c0c0'
+	    	'#F1595F',
+	    	'#79C36A',
+	    	'#599AD3',
+	    	'#9E66AB',
+	    	'#F9A65A'
+	    	
 	    ];
+
 }
 
 LineGraph.prototype.getDateRange = function getDateRange() {
