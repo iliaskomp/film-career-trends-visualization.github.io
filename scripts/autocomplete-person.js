@@ -49,8 +49,6 @@ new autoComplete({
         var person = new Person(id, name);
         person.getFilmData();
 
-       // console.log('Item "'+item.getAttribute('data-langname')+' ('+item.getAttribute('data-lang')+')" selected by '+(e.type == 'keydown' ? 'pressing enter' : 'mouse click')+'.');
-     //   document.getElementById('advanced-demo').value = item.getAttribute('data-langname')+' ('+item.getAttribute('data-lang')+')';
     }
 });
 
