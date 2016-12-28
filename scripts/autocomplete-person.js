@@ -1,73 +1,57 @@
-   
-// d3.selectAll('#search-form').on('keyup', function(){
-//     d3.event.preventDefault()
-//     var searchTerm = document.getElementById('search-field').value;
-
-//     // If more than 3 letters start autocomplete
-//     if (searchTerm.length >= 3) {
-//         var searchPersonUrl = 'search/person';
-//         var query = d3.selectAll('#search-field').node().value;        
-//         var autocompleteRequestUrl = baseUrl +  searchPersonUrl + "?api_key=" + apiKey + "&query=" + query;
-
-//        d3.json(autocompleteRequestUrl, createObjectForAutocomplete);
-//     }  
-// })
-
-
-// function createObjectForAutocomplete(json) {
-//     // console.log(json);
-//     var keys = [];
-
-//     for (var i = 0; i < 5; i++) {
-//         keys.push({
-//             "name": json.results[i].name,
-//             "profile_path": json.results[i].profile_path
-//         });
-
-//     }
-//     console.log(keys);
-
-//     start(keys);
-//     var my_autoComplete = new autoComplete({key1: value1, key2: value2});
-// }
-
-
-var suggestions = [];
-
-var autocomplete = new autoComplete({
+new autoComplete({
     selector: '#search-field',
     minChars: 3,
     source: function(term, response){
+        // suggestionsWithImage = {};
         var searchPersonUrl = 'search/person';
        // var query = d3.selectAll('#search-field').node().value;        
         var query = term;
         var autocompleteRequestUrl = baseUrl +  searchPersonUrl + "?api_key=" + apiKey + "&query=" + query;
 
         d3.json(autocompleteRequestUrl, function(json) {
+            var suggestions = [];
+            var suggestionsWithImage = [];
             for (var i = 0; i < 5; i++) {
                 suggestions.push(json.results[i].name);
-
-            }
-            console.log(suggestions);
-            response(suggestions);
+                suggestionsWithImage.push({
+                    "name": json.results[i].name,
+                    "id": json.results[i].id,
+                    "profile_path": json.results[i].profile_path
+                });
+            }            
+            response(suggestionsWithImage);
         });
+    },
+    renderItem: function (item, search){    
+        var imgPath;
 
-   //     console.log("test autocomplete");
-  //      console.log(suggestions);
+        if (item.profile_path != null) {
+            imgPath = 'https://image.tmdb.org/t/p/w45/' + item.profile_path;
+        } else {
+            imgPath = 'img/no-profile-w45.jpg';
+        }
 
-   //     suggest(suggestions);
+        return '<div class="autocomplete-suggestion" data-name="'+item.name+'" data-id="' + item.id + '" data-val="'+search+'"><img src="' + imgPath + '" width="20px" /><p>' + item.name + '</p></div>';
+    },
+    onSelect: function(e, term, item){        
+        var id = item.getAttribute('data-id');
+        var name = item.getAttribute('data-name');
+
+        // var p = data[this.id];
+        if(lineGraph.getPersonIndex(id) !== -1) {
+            alert("Person already added!");
+            return;
+        }
+        if(lineGraph.people.length >= 5) {
+            alert("Maximum of 5 people already reached!")
+            return;
+        }
+        var person = new Person(id, name);
+        person.getFilmData();
+
+       // console.log('Item "'+item.getAttribute('data-langname')+' ('+item.getAttribute('data-lang')+')" selected by '+(e.type == 'keydown' ? 'pressing enter' : 'mouse click')+'.');
+     //   document.getElementById('advanced-demo').value = item.getAttribute('data-langname')+' ('+item.getAttribute('data-lang')+')';
     }
-    // renderItem: function (item, search){
-    //     console.log(search);
-    //     console.log(item);
-    //     search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&amp;');
-    //     var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
-    //     return '<div class="autocomplete-suggestion" data-langname="'+item[0]+'" data-lang="'+item[1]+'" data-val="'+search+'"><img src="img/'+item[1]+'.png"> '+item[0].replace(re, "<b>$1</b>")+'</div>';
-    // },
-    // onSelect: function(e, term, item){
-    //     console.log('Item "'+item.getAttribute('data-langname')+' ('+item.getAttribute('data-lang')+')" selected by '+(e.type == 'keydown' ? 'pressing enter' : 'mouse click')+'.');
-    //     document.getElementById('advanced-demo').value = item.getAttribute('data-langname')+' ('+item.getAttribute('data-lang')+')';
-    // }
 });
 
 

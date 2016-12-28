@@ -106,3 +106,23 @@ div.tooltip {
     border-radius: 8px;			
     pointer-events: none;			
 }
+
+
+.autocomplete-suggestion {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+
+.autocomplete-suggestion img {
+    float: left;
+    margin-right: 15px;
+}
+
+.autocomplete-suggestion p {
+    float:left;
+}
+
+.autocomplete-suggestions .selected {
+    background: #f0ebd2; 
+}
