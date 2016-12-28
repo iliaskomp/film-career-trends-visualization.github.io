@@ -18,8 +18,8 @@ function showPersonResults(json) {
 	var data = json.results;
     var personResults = d3.selectAll('#person-results');
     clearResultsDiv();
-    
-    for(var i=0; i<data.length; i++) {
+
+    for (var i=0; i<data.length; i++) {
         personResults.append('li')
         	.attr('class','person-result')
         	.attr('id', i)
@@ -38,6 +38,25 @@ function showPersonResults(json) {
         		person.getFilmData();
          	});
     }
+
+
+
+    personResults.selectAll('li')
+        .data(json.results)
+        .append('img')
+        .attr('height', 25)
+        .attr('src', function(d, i) {
+            var imgPath;
+
+            if (d.profile_path != null) {
+                imgPath = 'https://image.tmdb.org/t/p/w45/' + d.profile_path;
+            } else {
+                imgPath = 'img/no-profile-w45.jpg';
+            }             
+            return imgPath;
+            console.log(d);
+        });       
+
 }
 
 function clearResultsDiv() {

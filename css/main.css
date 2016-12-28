@@ -18,8 +18,12 @@
 .person-result {
     display: block;
     margin: 0.6em 0;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #eee;
     padding-bottom: 0.6em;
+}
+#person-results img {
+    float: left;
+    margin-right: 10px;
 }
 
 .film-info {
