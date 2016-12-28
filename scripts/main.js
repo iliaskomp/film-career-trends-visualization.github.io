@@ -18,7 +18,7 @@ function showPersonResults(json) {
 	var data = json.results;
     var personResults = d3.selectAll('#person-results');
     clearResultsDiv();
-
+    
     for(var i=0; i<data.length; i++) {
         personResults.append('li')
         	.attr('class','person-result')
