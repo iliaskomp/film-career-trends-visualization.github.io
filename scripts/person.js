@@ -129,7 +129,7 @@ Person.prototype.select = function select() {
 Person.prototype.deselect = function deselect() {
 	var self = this;
 
-	self.graphLine.transition().style('opacity',0.5).attr('stroke-width',1);
+	self.graphLine.transition().style('opacity',0.8).attr('stroke-width',1);
 	self.scatterplot.transition().style('opacity',0);
 	self.listing.attr('class','');
 	self.selected = false;

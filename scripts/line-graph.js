@@ -3,7 +3,7 @@ function LineGraph() {
 	this.vis = d3.select('#visualization');
 	this.xRange = null;
 	this.yRange = null;
-	this.WIDTH = 1000;
+	this.WIDTH = 860;
 	this.HEIGHT = 500;
 	this.MARGINS = {
 			top: 20,
@@ -128,7 +128,7 @@ LineGraph.prototype.drawGraphLines = function drawGraphLines() {
 			    .attr('stroke', self.lineColors[person.color])
 			    .attr('stroke-width', 1)
 			    .attr('fill', 'none')
-	    		.style('opacity', 0.5);
+	    		.style('opacity', 0.8);
 	    
 	    person.scatterplot = 
 	    	self.vis.selectAll('.movie-dot-'+person.color)
@@ -180,7 +180,7 @@ LineGraph.prototype.showMovieDetails = function showMovieDetails(film) {
 
 	d3.selectAll('#movie-details').style('display', 'block');
 	d3.selectAll('#details-title').html(film.title + " (" + film.getYear() + ")")
-								  .attr('href', filmUrl);
+								  .attr('href', filmUrl).attr('target','_blank');
 	d3.selectAll('#details-rating').html("Rating: " +  film.vote_average);
 	d3.selectAll('#details-overview').html(film.overview);
 	d3.selectAll('#details-poster').attr('src', posterUrl);

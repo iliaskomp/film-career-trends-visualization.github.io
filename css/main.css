@@ -1,24 +1,26 @@
 #header h1 {
-    text-align: center;
-    font-size:3em;
-    padding: 0.5em 0;
+    color: #fff;
+    font-size:2.5em;
     font-family: Georgia;
     font-weight: 900;
-    color: #fff;
-    margin-left: -315px;
+    padding: 0.5em;
+	text-align: left;
+	text-indent: 50px;
 }
 
 #header {
-    background: #F1595F;
+    background: #081c24;
+    border-bottom: 1px solid #00d373;
 }
 #person-results {
  margin-top: 3em;
 }
 
 .person-result {
+    border-bottom: 1px solid #eee;
+	cursor: pointer;
     display: block;
     margin: 0.6em 0;
-    border-bottom: 1px solid #eee;
     padding-bottom: 0.6em;
 }
 #person-results img {
@@ -31,38 +33,40 @@
 }
 
 #search-form,
-#visualization-container,
-#movie-details {
+#visualization-container {
 	float: left;
 }
 
 #search-form {
-    margin: 2em 0 0 1em;
+    margin: 1.25em 3em 1.25em 1.25em;
 }
 
 #search-field {
     box-shadow: none;
     border: none;
     height: 40px;
+    line-height: 2.5em;
     padding: 0 1em 0 1em;
     border-bottom-left-radius: 10px;
     border-top-left-radius: 10px;
 }
 
 #search-button {
-    /*padding: 9.5px 40px;*/
-    border-radius: 0;
+    background: #00d373;
     border: none;
-    margin-left: -5px;
-    height: 40px;
-    padding: 0 2em;
+    border-radius: 0;
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
     border-left: 1px solid #aaa;
+    color: #fff;
+    height: 40px;
+    margin-left: -5px;
+    padding: 0 2em;
 }
 
 #visualization-container {
-    margin-top: 1.3em;
+    margin-right: 2em;
+	margin-top: 1.3em;
 }
 
 #chosen-people {
@@ -71,17 +75,17 @@
 	margin-top: 1em;
 }
 #chosen-people li {
-	background: #f0ebd2;
-	border: 1px solid #aaa;
+	background: #d4e8f0;
+	border: 1px solid #556971;
 	cursor:  pointer;
 	display: inline-block;
 	margin: 0 5px 0 0;
     padding: 5px;
 }
 #chosen-people .selected {
-	border-color: #666;
+	border-color: #081c24;
     font-weight: 500;
-    background:#e6d895;
+    background: #bbcfd7;
 }
 #chosen-people span {
 	display: inline-block;
@@ -115,13 +119,9 @@
 
 
 #movie-details {
-	float:left;
-	width: 25%;
-	margin: 7em 0 0 3em;
+	float: none;
+	margin: 1em;
 	padding: 1em;
-	/*border: 1px solid black;*/
-	background: #f0ebd2;
-	/*border-radius: 1em;*/
 	display: none;
 }
 
@@ -130,7 +130,7 @@
 	font-size: 1.5em;
 	margin-bottom: 1em;
 	text-decoration: none;
-	color: #26b2c9;
+	color: #00d373;
 }
 
 #details-poster {
