@@ -1,0 +1,3 @@
+# Film Career Trends Visualization
+
+The visualization tracks the film ratings of a specific cast or crew member (e.g. actor, director) throughout his/her career via a search function. Once the desired person is selected, a scatterplot shows the ratings of the films he/she participated chronologically. Additionally, the chart fits an approximate trend line to the data points. Further, the user can select a film (represented by a dot on the line graph) and see further details on the specific film. Additional cast or crew members can be added to the graph, though only one can be focused at a time.
